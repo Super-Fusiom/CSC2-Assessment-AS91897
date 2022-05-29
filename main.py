@@ -7,26 +7,25 @@ root = Tk()
 root.title('Party Hire')
 class Window:
     def __init__(self, master):
-        #rootcount is used to check if the 
+        #rootcount is used to check if the second window is open to deny extra instances
         global rootcount
-        myFrame = ttk.Frame(master).grid(column=0, row=0)
-        
+        myFrame = ttk.Frame(master).grid()
         # Buttons
-        self.quitbtn = ttk.Button(master, text='Quit', command=self.quitf).grid(column=2, row=1, padx=5)
-        self.updatebtn = ttk.Button(master, text='Update', command=self.window2).grid(column=0, row=1, padx=5)
-        self.printbtn = ttk.Button(master, text='Print', command=self.printf).grid(column=1, row=1, padx=5)
+        self.quitbtn = ttk.Button(myFrame, text='Quit', command=self.quitf).grid(column=2, row=1, padx=5)
+        self.updatebtn = ttk.Button(myFrame, text='Update', command=self.window2).grid(column=0, row=1, padx=5)
+        self.printbtn = ttk.Button(myFrame, text='Print', command=self.printf).grid(column=1, row=1, padx=5)
         rootcount = 1
 
         #Labels
-        self.namelb = ttk.Label(master, text="Name").grid(column=0, row=2)
-        self.receiptlb = ttk.Label(master, text="Receipt Number").grid(column=0, row=3)
-        self.itemlb = ttk.Label(master, text="Item").grid(column=0, row=4)
-        self.quantitylb = ttk.Label(master, text="Quantity").grid(column=0, row=5)
+        self.namelb = ttk.Label(myFrame, text="Name").grid(column=0, row=2)
+        self.receiptlb = ttk.Label(myFrame, text="Receipt Number").grid(column=0, row=3)
+        self.itemlb = ttk.Label(myFrame, text="Item").grid(column=0, row=4)
+        self.quantitylb = ttk.Label(myFrame, text="Quantity").grid(column=0, row=5)
         # Text Box
-        self.nametxt = ttk.Entry(master, text="        ").grid(column=1, row=2)
-        self.receipttxt = ttk.Entry(master, text="        ").grid(column=1, row=3)
-        self.itemtxt = ttk.Entry(master, text="        ").grid(column=1, row=4)
-        self.quantitytxt = ttk.Entry(master, text="        ").grid(column=1, row=5) 
+        self.nametxt = ttk.Entry(myFrame).grid(column=1, row=2)
+        self.receipttxt = ttk.Entry(myFrame).grid(column=1, row=3)
+        self.itemtxt = ttk.Entry(myFrame).grid(column=1, row=4)
+        self.quantitytxt = ttk.Entry(myFrame).grid(column=1, row=5) 
     # quit the app
     def quitf(self):
         exit()
