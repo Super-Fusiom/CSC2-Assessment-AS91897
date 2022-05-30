@@ -9,11 +9,11 @@ class Window:
     def __init__(self, master):
         #rootcount is used to check if the second window is open to deny extra instances
         global rootcount
-        myFrame = ttk.Frame(master).grid()
+        myFrame = ttk.LabelFrame(master, text="no").grid(row=0, column=0)
         # Buttons
         self.quitbtn = ttk.Button(myFrame, text='Quit', command=self.quitf).grid(column=2, row=1, padx=5)
-        self.updatebtn = ttk.Button(myFrame, text='Update', command=self.window2).grid(column=0, row=1, padx=5)
-        self.printbtn = ttk.Button(myFrame, text='Print', command=self.printf).grid(column=1, row=1, padx=5)
+        self.updatebtn = ttk.Button(myFrame, text='Update', command=self.printf).grid(column=0, row=1, padx=5)
+        self.printbtn = ttk.Button(myFrame, text='Print', command=self.window2).grid(column=1, row=1, padx=5)
         rootcount = 1
 
         #Labels
@@ -31,6 +31,8 @@ class Window:
         exit()
     
     def printf(self):
+        customer.name = self.nametxt.get()
+        print(customer.name)
         self.window2()
 
     def window2(self):
@@ -45,8 +47,17 @@ class Window:
         global rootcount, root2
         rootcount = 1
         root2.destroy()
+class Customer:
+    def __init__(self):
+        self.name = str()
+        self.receipt = int()
+        self.item = str()
+        self.quantity = int()
+
 
 
 window = Window(root)
+customer = Customer()
 
+print(window.nametxt)
 root.mainloop()
