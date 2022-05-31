@@ -7,20 +7,46 @@ class Window:
     def quitf(self):
         exit()
     # Collects the entries and placing them into the Customer Class
+    # It checks for errors as well
     def updatef(self):
         customer.name = self.nametxt.get()
         customer.receipt = self.receipttxt.get()
         customer.item = self.itemtxt.get()
         customer.quantity = self.quantitytxt.get()
-        print(customer.name)
         self.printf()
 # Create the second window with the customer list.
     def printf(self):
-        while self.rootcount <= 1:
-            self.root2 = Tk()
-            self.root2.title('results')
-            self.rootcount += 1
-            self.root2.protocol("WM_DELETE_WINDOW", self.result_close)
+        if len(self.nametxt.get()) == 0:
+            messagebox.showerror('No name', 'Please input a name')
+        try:
+            str(self.nametxt.get())
+            if len(self.receipttxt.get()) == 0:
+                messagebox.showerror('No receipt', 'Input receipt')
+            try:
+                int(self.receipttxt.get())
+                if len(self.itemtxt.get()) == 0:
+                    messagebox.showerror('Item', 'Insert an item')
+                try: 
+                    str(self.itemtxt.get())
+                    if len(self.quantitytxt.get()) == 0:
+                        messagebox.showerror('Quantity', 'What is the quantity?')
+                    try: 
+                        int(self.quantitytxt.get())
+                        while self.rootcount <= 1:
+                            self.root2 = Tk()
+                            self.root2.title('results')
+                            self.rootcount += 1
+                            self.root2.protocol("WM_DELETE_WINDOW", self.result_close)
+                    except ValueError:
+                        messagebox.showerror('Quantity', 'Number only')
+                except ValueError:
+                    messagebox.showerror('Item', 'Letters only')    
+            except ValueError:
+                messagebox.showerror('Receipt', "Numbers only")
+        except:
+            messagebox.showerror('Numbers?', "Input letters in name")
+
+        # Display the inputs
         self.rname = Label(self.root2, text=customer.name).grid(row=self.rows, column=0, padx=20)
         self.rreceipt = Label(self.root2, text=customer.receipt).grid(row=self.rows, column=1, padx=20)
         self.ritem = Label(self.root2, text=customer.item).grid(row=self.rows, column=2, padx=20)
@@ -28,6 +54,7 @@ class Window:
         self.rows += 1
     #when the second window is closed
     def result_close(self):
+        self.rows = 1
         self.rootcount = 1
         self.root2.destroy()
     # The constructor/ __init__
@@ -53,7 +80,7 @@ class Window:
         self.itemtxt.grid(column=1, row=4)
         self.quantitytxt = Entry(self.root, text="")
         self.quantitytxt.grid(column=1, row=5)
-        self.rows = 0
+        self.rows = 1
 class Customer:
     def __init__(self):
         self.name = ""
