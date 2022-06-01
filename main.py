@@ -16,35 +16,42 @@ class Window:
         self.printf()
 # Create the second window with the customer list.
     def printf(self):
-        if len(self.nametxt.get()) == 0:
-            messagebox.showerror('No name', 'Please input a name')
-        try:
-            str(self.nametxt.get())
-            if len(self.receipttxt.get()) == 0:
-                messagebox.showerror('No receipt', 'Input receipt')
+        while True:
+            if len(self.nametxt.get()) == 0:
+                messagebox.showerror('No name', 'Please input a name')
+                break
             try:
-                int(self.receipttxt.get())
-                if len(self.itemtxt.get()) == 0:
-                    messagebox.showerror('Item', 'Insert an item')
-                try: 
-                    str(self.itemtxt.get())
-                    if len(self.quantitytxt.get()) == 0:
-                        messagebox.showerror('Quantity', 'What is the quantity?')
+                str(self.nametxt.get())
+                if len(self.receipttxt.get()) == 0:
+                    messagebox.showerror('No receipt', 'Input receipt')
+                    break
+                try:
+                    int(self.receipttxt.get())
+                    if len(self.itemtxt.get()) == 0:
+                        messagebox.showerror('Item', 'Insert an item')
                     try: 
-                        int(self.quantitytxt.get())
-                        while self.rootcount <= 1:
-                            self.root2 = Tk()
-                            self.root2.title('results')
-                            self.rootcount += 1
-                            self.root2.protocol("WM_DELETE_WINDOW", self.result_close)
+                        str(self.itemtxt.get())
+                        if len(self.quantitytxt.get()) == 0:
+                            messagebox.showerror('Quantity', 'What is the quantity?')
+                        try: 
+                            int(self.quantitytxt.get())
+                            while self.rootcount <= 1:
+                                self.root2 = Tk()
+                                self.root2.title('results')
+                                self.rootcount += 1
+                                self.root2.protocol("WM_DELETE_WINDOW", self.result_close)
+                        except ValueError:
+                            messagebox.showerror('Quantity', 'Number only')
+                            break
                     except ValueError:
-                        messagebox.showerror('Quantity', 'Number only')
+                        messagebox.showerror('Item', 'Letters only')
+                        break   
                 except ValueError:
-                    messagebox.showerror('Item', 'Letters only')    
-            except ValueError:
-                messagebox.showerror('Receipt', "Numbers only")
-        except:
-            messagebox.showerror('Numbers?', "Input letters in name")
+                    messagebox.showerror('Receipt', "Numbers only")
+                    break
+            except:
+                messagebox.showerror('Numbers?', "Input letters in name")
+                break
 
         # Display the inputs
         self.rname = Label(self.root2, text=customer.name).grid(row=self.rows, column=0, padx=20)
