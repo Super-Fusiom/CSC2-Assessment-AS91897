@@ -92,6 +92,13 @@ class Window:
             self.updatebtn = Button(self.root, text='Update', command=self.updatef).grid(column=0, row=1, padx=5)
             self.printbtn = Button(self.root, text='Print', command=self.printf).grid(column=1, row=1, padx=5)
             self.deletebtn = Button(self.root, text='Delete Row', command=self.delete_row).grid(column=2, row=6)
+        def image():
+            #Image is here
+            logoimg = PhotoImage(file="image/hire-logo.png")
+            logo = Label(self.root, image=logoimg)
+            logo.image = logoimg
+            logo.grid(column=0 ,row=0, columnspan=2)
+        self.rows = 1
         #root count reset
         self.rootcount = 1
         #Labels
@@ -115,7 +122,7 @@ class Window:
         buttons()
         labels()
         entry()
-        self.rows = 1
+        image()
 class Customer:
     def __init__(self):
         self.row = 1
