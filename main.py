@@ -16,10 +16,14 @@ class Window:
         customer.quantity = self.quantitytxt.get()
         con = sqlite3.connect('save/save.db')
         cursorObj = con.cursor()
-        cursorObj.execute("CREATE TABLE customers(id integer PRIMARY KEY, name text, receipt real, item text, quanitity integer")
-        cursorObj.execute("INSERT INTO customers (name, receipt, item, quantity) VALUES(?, ?, ?, ?, ?",customer.name, customer.receipt, customer.item, customer.quantity)
-        con.commit()
-        self.printf()
+        try: 
+            cursorObj.execute("INSERT INTO customers (id, name, receipt, item, quantity) VALUES(?, ?, ?, ?, ?)", [customer.row, customer.name, customer.receipt, customer.item, customer.quantity])
+        except sqlite3.OperationalError:
+            messagebox.showerror("error", "whoops something happend in our end.")
+        finally:
+            customer.row += 1
+            con.commit()
+            self.printf()
 # Create the second window with the customer list.
     def printf(self):
         while True:
@@ -49,6 +53,8 @@ class Window:
                                 Label(self.root2, text="Row").grid(column=0, row=0)
                                 Label(self.root2, text="Name").grid(column=1, row=0)
                                 Label(self.root2, text="Receipt").grid(column=2, row=0)
+                                Label(self.root2, text="Item").grid(column=3, row=0)
+                                Label(self.root2, text="Quantity").grid(column=4, row=0)
                                 self.root2.protocol("WM_DELETE_WINDOW", self.result_close)
                                 break
                             # Display the inputs
@@ -112,6 +118,7 @@ class Window:
         self.rows = 1
 class Customer:
     def __init__(self):
+        self.row = 1
         self.name = ""
         self.receipt = ""
         self.item = ""
