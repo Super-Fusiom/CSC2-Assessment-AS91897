@@ -48,7 +48,7 @@ class Window:
             try:
                 if len(self.quantitytxt.get()) != 0:
                     int(self.quantitytxt.get())
-                    if self.quantitytxt.get() >= 1 and self.quantitytxt.get() <= 500:
+                    if int(self.quantitytxt.get()) >= 1 and int(self.quantitytxt.get()) <= 500:
                         customer.quantity = self.quantitytxt.get()
                     else:
                         messagebox.showerror('error', 'quantity has to be between 1 and 500')
@@ -65,10 +65,12 @@ class Window:
                 cursorObj.execute("INSERT INTO customers (id, name, receipt, item, quantity) VALUES(?, ?, ?, ?, ?)", [customer.row, customer.name, customer.receipt, customer.item, customer.quantity])
             except sqlite3.OperationalError:
                 messagebox.showerror("error", "whoops something happend in our end.")
+                break
             finally:
                 con.commit()
                 con.close()
                 self.printf()
+                break
 # Create the second window with the customer list.
     def printf(self):
         while self.rootcount <= 1:    
@@ -81,6 +83,8 @@ class Window:
             Label(self.root2, text="Receipt").grid(column=2, row=0, padx=20)
             Label(self.root2, text="Item").grid(column=3, row=0, padx=20)
             Label(self.root2, text="Quantity").grid(column=4, row=0, padx=20)
+            # The columnspan is 100 because the max entries for a table is 99
+            Scrollbar(self.root2).grid(column=5, sticky="ns", columnspan=100)
             self.root2.protocol("WM_DELETE_WINDOW", self.result_close)         
         #Database stuff
         def database():
