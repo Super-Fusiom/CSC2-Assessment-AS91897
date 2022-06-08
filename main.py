@@ -48,11 +48,16 @@ class Window:
             try:
                 if len(self.quantitytxt.get()) != 0:
                     int(self.quantitytxt.get())
-                    customer.quantity = self.quantitytxt.get()
+                    if self.quantitytxt.get() >= 1 and self.quantitytxt.get() <= 500:
+                        customer.quantity = self.quantitytxt.get()
+                    else:
+                        messagebox.showerror('error', 'quantity has to be between 1 and 500')
                 else:
                     messagebox.showerror('error' , 'Quantity field is blank')
+                    break
             except ValueError:
                 messagebox.showerror('error', "quantity doesn't have letters")
+                break
             con = sqlite3.connect('save/save.db')
             cursorObj = con.cursor()
             try: 
