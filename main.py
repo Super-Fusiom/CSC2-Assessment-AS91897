@@ -9,6 +9,14 @@ class Window:
     # quit the app
     def quitf(self):
         exit()
+    # Delete the table
+    def deletesave(self):
+        con = sqlite3.connect('save/save.db')
+        cursorObj = con.cursor()
+        cursorObj.execute('DROP table if exists customers')
+        con.commit()
+        con.close()
+        messagebox.showinfo('Deleted', 'Data is deleted')
     # Collects the entries and placing them into the Customer Class
     # It checks for errors as well through a while loop
     def updatef(self):
@@ -61,6 +69,7 @@ class Window:
             con = sqlite3.connect('save/save.db')
             cursorObj = con.cursor()
             try: 
+                cursorObj.execute('create table if not exists customers(id, name, receipt, item, quantity)')
                 customer.row += 1
                 cursorObj.execute("INSERT INTO customers (id, name, receipt, item, quantity) VALUES(?, ?, ?, ?, ?)", [customer.row, customer.name, customer.receipt, customer.item, customer.quantity])
             except sqlite3.OperationalError:
@@ -73,6 +82,7 @@ class Window:
                 break
 # Create the second window with the customer list.
     def printf(self):
+        # Display the window witht the normal labels.
         while self.rootcount <= 1:    
             self.root2 = Tk()
             self.rows = 1
@@ -90,10 +100,12 @@ class Window:
         def database():
             con = sqlite3.connect('save/save.db')
             cursorObj = con.cursor()
-
-            cursorObj.execute("SELECT *, oid FROM customers")
+            try:
+                cursorObj.execute("SELECT *, oid FROM customers")
+            except sqlite3.OperationalError:
+                messagebox.showerror('error', 'There is no data to show')
             records = cursorObj.fetchall()
-
+            # Display the data to the second window
             for record in records:
                 rid = ttk.Label(self.root2, text=str(record[0]))
                 rid.grid(row=self.rows, column=0, padx=20)
@@ -114,6 +126,7 @@ class Window:
         self.rows = 1
         self.rootcount = 1
         self.root2.destroy()
+    # Delete the row using the user inputs number
     def delete_row(self):
         con = sqlite3.connect('save/save.db')
         c = con.cursor()
@@ -128,7 +141,8 @@ class Window:
         self.root.title('Party Hire')
         # Buttons
         def buttons():
-            self.quitbtn = ttk.Button(self.root, text='Quit', command=self.quitf).grid(column=2, row=1, padx=5)
+            self.quitbtn = ttk.Button(self.root, text='Quit', command=self.quitf).grid(column=2, row=0, padx=5)
+            self.deletesavebtn = ttk.Button(self.root, text='Delete saved', command=self.deletesave).grid(column=2, row=1, padx=5)
             self.updatebtn = ttk.Button(self.root, text='Update', command=self.updatef).grid(column=0, row=1, padx=5)
             self.printbtn = ttk.Button(self.root, text='Print', command=self.printf).grid(column=1, row=1, padx=5)
             self.deletebtn = ttk.Button(self.root, text='Delete Row', command=self.delete_row).grid(column=2, row=6)
