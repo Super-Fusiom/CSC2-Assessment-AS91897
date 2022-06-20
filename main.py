@@ -9,8 +9,9 @@ class Window:
     # quit the app
     def quitf(self):
         exit()
-    # Delete the table
+    # Delete the table(saved data)
     def deletesave(self):
+        customer.row = 1
         con = sqlite3.connect('save/save.db')
         cursorObj = con.cursor()
         cursorObj.execute('DROP table if exists customers')
@@ -69,9 +70,9 @@ class Window:
             con = sqlite3.connect('save/save.db')
             cursorObj = con.cursor()
             try: 
-                cursorObj.execute('create table if not exists customers(id, name, receipt, item, quantity)')
+                cursorObj.execute('create table if not exists customers(name, receipt, item, quantity)')
+                cursorObj.execute("INSERT INTO customers (name, receipt, item, quantity) VALUES(?, ?, ?, ?)", [customer.name, customer.receipt, customer.item, customer.quantity])
                 customer.row += 1
-                cursorObj.execute("INSERT INTO customers (id, name, receipt, item, quantity) VALUES(?, ?, ?, ?, ?)", [customer.row, customer.name, customer.receipt, customer.item, customer.quantity])
             except sqlite3.OperationalError:
                 messagebox.showerror("error", "whoops something happend in our end.")
                 break
@@ -100,10 +101,12 @@ class Window:
         def database():
             con = sqlite3.connect('save/save.db')
             cursorObj = con.cursor()
+            #Check if there is no data
             try:
-                cursorObj.execute("SELECT *, oid FROM customers")
+                cursorObj.execute("SELECT rowid, * FROM customers")
             except sqlite3.OperationalError:
                 messagebox.showerror('error', 'There is no data to show')
+                self.result_close()
             records = cursorObj.fetchall()
             # Display the data to the second window
             for record in records:
